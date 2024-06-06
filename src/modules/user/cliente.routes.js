@@ -1,19 +1,18 @@
-const express = require("express");
-const clienteService = require("./cliente.service");
-
+const express = require('express');
 const router = express.Router();
+const clienteService = require('./cliente.service');
 
 // GET /api/cliente
 router.get("/api/cliente", async (req, res) => {
   // #swagger.tags = ['Cliente']
   try {
-    params = JSON.parse(req.headers['params'])
+    const params = JSON.parse(req.headers['params']);
 
-    let paginated = await clienteService.paginated(params)
+    let paginated = await clienteService.paginated(params);
     return res.status(200).send(paginated);
 
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).send(error);
   }
 });
