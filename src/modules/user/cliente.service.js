@@ -11,7 +11,7 @@ async function createIfNotExists(decoded, response) {
 }
 
 async function findOneById(_id) {
-  return await clienteModel.findById(_id).exec();
+  return await clienteModel.findById(_id).populate('user').exec(); // Populamos el usuario asociado
 }
 
 async function findOne(email) {
