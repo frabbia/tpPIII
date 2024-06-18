@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
 const clienteSchema = new mongoose.Schema({
   localidad: String,
   codigo_postal: String,

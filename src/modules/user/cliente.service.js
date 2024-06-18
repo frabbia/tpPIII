@@ -23,27 +23,29 @@ async function save(cliente) {
   return await _cliente.save();
 }
 
+
+
+
+
+
+
 async function paginated(params) {
-  let perPage = params.perPage ? params.perPage : 10,
-    page = Math.max(0, params.page);
-  let filter = params.filter ? params.filter : {};
-  let sort = params.sort ? params.sort : {};
+  let perPage = params.perPage?params.perPage:10, page = Math.max(0, params.page)
+  let filter = params.filter?params.filter:{}
+  let sort = params.sort?params.sort:{}
 
-  try {
-    let count = await clienteModel.countDocuments(filter);
-    let data = await clienteModel.find(filter)
-      .limit(perPage)
-      .skip(perPage * page)
-      .sort(sort)
-      .populate('user') // Poblar el usuario asociado
-      .exec();
+  let count = await clienteModel.countDocuments(filter)
+  let data = await clienteModel.find(filter)
+    .limit(perPage)
+    .skip(perPage * page)
+    .sort(sort)
+    .populate('user')
+    .exec();
 
-    return pager.createPager(page, data, count, perPage);
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+  return pager.createPager(page,data,count,perPage)
 }
+
+
 
 async function update(id, updatedCliente) {
   return await clienteModel.findByIdAndUpdate(id, updatedCliente, { new: true }).exec();
