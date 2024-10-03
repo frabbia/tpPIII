@@ -7,14 +7,19 @@ const router = express.Router();
 router.get("/api/user", async (req, res) => {
   // #swagger.tags = ['Usuario']
   try {
-    params = JSON.parse(req.headers['params'])
+    // Asegúrate de que estás pasando params correctamente
+    const params = req.query; // Usar query params en lugar de headers
 
-    let paginated = await userService.paginated(params)
-    return res.status(200).send(paginated);
+    // Llama a tu servicio para obtener los datos paginados
+    let paginated = await userService.paginated(params);
+
+    // Enviar la respuesta
+    return res.status(200).json(paginated); // Asegúrate de enviar como JSON
 
   } catch (error) {
-    console.log(error)
-    return res.status(500).send(error);
+    console.log(error);
+    // Devuelve un mensaje de error estructurado
+    return res.status(500).json({ message: "Error interno del servidor", error });
   }
 });
 

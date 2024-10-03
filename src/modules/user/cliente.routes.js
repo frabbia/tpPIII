@@ -6,16 +6,22 @@ const clienteService = require('./cliente.service');
 router.get("/api/cliente", async (req, res) => {
   // #swagger.tags = ['Cliente']
   try {
-    const params = JSON.parse(req.headers['params']);
+    // Obtener los parámetros desde la query string
+    const params = req.query; // Usar query params en lugar de headers
 
+    // Llama a tu servicio para obtener los datos paginados
     let paginated = await clienteService.paginated(params);
-    return res.status(200).send(paginated);
+
+    // Enviar la respuesta en formato JSON
+    return res.status(200).json(paginated); // Asegúrate de enviar como JSON
 
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error);
+    // Devuelve un mensaje de error estructurado
+    return res.status(500).json({ message: "Error interno del servidor", error });
   }
 });
+
 
 // GET /api/cliente/:id
 router.get("/api/cliente/:id",  async (req, res) => {
