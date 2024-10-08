@@ -3,23 +3,43 @@ const userService = require("./user.service");
 
 const router = express.Router();
 
-// GET /api/user
+// // GET /api/user
+// router.get("/api/user", async (req, res) => {
+//   // #swagger.tags = ['Usuario']
+//   try {
+//     // Asegúrate de que estás pasando params correctamente
+//     const params = req.query; // Usar query params en lugar de headers
+
+//     // Llama a tu servicio para obtener los datos paginados
+//     let paginated = await userService.paginated(params);
+
+//     // Enviar la respuesta
+//     return res.status(200).json(paginated); // Asegúrate de enviar como JSON
+
+//   } catch (error) {
+//     console.log(error);
+//     // Devuelve un mensaje de error estructurado
+//     return res.status(500).json({ message: "Error interno del servidor", error });
+//   }
+// });
+
+
 router.get("/api/user", async (req, res) => {
-  // #swagger.tags = ['Usuario']
+  // #swagger.tags = ['Task']
   try {
-    // Asegúrate de que estás pasando params correctamente
-    const params = req.query; // Usar query params en lugar de headers
+    const { page = 1, perPage = 10 } = req.query; // Obtener parámetros de la consulta
+    const options = {
+      page: parseInt(page), // Convertir a número
+      limit: parseInt(perPage), // Convertir a número
+    };
 
-    // Llama a tu servicio para obtener los datos paginados
-    let paginated = await userService.paginated(params);
-
-    // Enviar la respuesta
-    return res.status(200).json(paginated); // Asegúrate de enviar como JSON
+    // Suponiendo que estás utilizando un servicio para paginar las tareas
+    let paginated = await userService.paginated(options);
+    return res.status(200).send(paginated);
 
   } catch (error) {
     console.log(error);
-    // Devuelve un mensaje de error estructurado
-    return res.status(500).json({ message: "Error interno del servidor", error });
+    return res.status(500).send(error);
   }
 });
 

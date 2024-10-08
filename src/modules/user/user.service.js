@@ -22,22 +22,49 @@ async function save(user){
     return await _user.save()
 }
 
-async function paginated(params) {
-    let perPage = params.perPage?params.perPage:10, page = Math.max(0, params.page)
-    let filter = params.filter?params.filter:{}
-    let sort = params.sort?params.sort:{}
+
+
+
+// async function paginated(params) {
+//     let perPage = params.perPage?params.perPage:10, page = Math.max(0, params.page)
+//     let filter = params.filter?params.filter:{}
+//     let sort = params.sort?params.sort:{}
   
-    let count = await userModel.countDocuments(filter)
-    let data = await userModel.find(filter)
+//     let count = await userModel.countDocuments(filter)
+//     let data = await userModel.find(filter)
+//       .limit(perPage)
+//       .skip(perPage * page)
+//       .sort(sort)
+
+//       .exec();
+  
+//     return pager.createPager(page,data,count,perPage)
+//   }
+
+
+async function paginated(params) {
+  // Inicializar perPage y page con valores predeterminados
+  let perPage = params.perPage;
+  let page = params.page; // Asegurarse de que page sea un número
+
+  let filter = params.filter ? params.filter : {};
+  let sort = params.sort ? params.sort : {};
+
+  // Contar total de documentos que coinciden con el filtro
+  let count = await userModel.countDocuments(filter);
+
+  // Obtener datos paginados
+  let data = await userModel.find(filter)
       .limit(perPage)
       .skip(perPage * page)
       .sort(sort)
-
       .exec();
-  
-    return pager.createPager(page,data,count,perPage)
-  }
-  
+
+  // Retornar la respuesta paginada utilizando el pager
+  return pager.createPager(page, data, count, perPage);
+}
+
+
 async function update(id, updatedUser) {
     return await userModel.findByIdAndUpdate(id, updatedUser, { new: true }).exec();
   }
